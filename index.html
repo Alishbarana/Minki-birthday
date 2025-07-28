@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, My Love</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fda4af 0%, #fb7185 30%, #f472b6 70%, #ec4899 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .floating-hearts, .sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 20px;
+            animation: floatHeart 6s ease-in-out infinite;
+        }
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+        .music-control {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        .music-control:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .music-icon {
+            color: white;
+            font-size: 20px;
+        }
+        /* Main card - Pure white, wider, shorter */
+        .birthday-card {
+            background: #fff;
+            border-radius: 28px;
+            padding: 40px 60px;
+            max-width: 620px;
+            width: 96vw;
+            min-height: 240px;
+            text-align: center;
+            box-shadow: 0 18px 40px rgba(236, 72, 153, 0.10);
+            position: relative;
+            z-index: 10;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            animation: cardFadeIn 0.7s ease-out forwards;
+            animation-delay: 0.1s;
+        }
+        @keyframes cardFadeIn {
+            from { opacity: 0; transform: scale(0.96) translateY(30px);}
+            to   { opacity: 1; transform: scale(1) translateY(0);}
+        }
+        .title, .heart-icons, .subtitle, .message, .begin-button {
+            opacity: 0;
+            transition: opacity 0.7s;
+        }
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.7rem;
+            font-weight: 700;
+            color: #ec4899;
+            margin-bottom: 12px;
+        }
+        .heart-icons {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 12px;
+            font-size: 28px;
+            color: #ec4899;
+        }
+        .subtitle {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #6b7280;
+            margin-bottom: 14px;
+        }
+        .message {
+            font-size: 1.05rem;
+            color: #9ca3af;
+            font-style: italic;
+            margin-bottom: 28px;
+        }
+        .begin-button {
+            background: linear-gradient(135deg, #ec4899, #fb7185);
+            color: white;
+            border: none;
+            padding: 16px 0;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 80%;
+            margin: 0 auto;
+            box-shadow: 0 6px 24px rgba(236, 72, 153, 0.18);
+            transition: all 0.3s;
+            display: block;
+        }
+        .begin-button:hover {
+            transform: scale(1.04);
+            box-shadow: 0 12px 32px rgba(236, 72, 153, 0.22);
+        }
+        .button-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        @media (max-width: 700px) {
+            .birthday-card { padding: 24px 8px; max-width: 98vw; }
+            .title { font-size: 2rem; }
+        }
+        /* Animations for background */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        @keyframes floatHeart {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(10deg); opacity: 0.6; }
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8);}
+            50% { opacity: 1; transform: scale(1.2);}
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="floating-hearts" id="floatingHearts"></div>
+    <div class="sparkles" id="sparkles"></div>
+    <!-- Music Control -->
+    <div class="music-control" id="musicControl">
+        <span class="music-icon" id="musicIcon">🎵</span>
+    </div>
+    <!-- Password Modal -->
+    <div id="passwordModal" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(255,192,203,0.85);z-index:99999;display:flex;align-items:center;justify-content:center;">
+        <div style="background:#fff;border-radius:24px;box-shadow:0 8px 32px rgba(236,72,153,0.18);padding:40px 32px;text-align:center;max-width:340px;">
+            <div style="font-family:'Dancing Script',cursive;font-size:2rem;color:#ec4899;margin-bottom:18px;">💖 Enter Your Secret Name 💖</div>
+            <input id="passwordInput" type="text" placeholder="Type your name..." style="width:90%;padding:12px 16px;border-radius:12px;border:1px solid #ec4899;font-size:1.1rem;margin-bottom:18px;">
+            <button id="passwordBtn" style="background:linear-gradient(135deg,#ec4899,#fb7185);color:#fff;border:none;padding:12px 0;border-radius:50px;font-size:1rem;font-weight:600;width:80%;box-shadow:0 4px 16px rgba(236,72,153,0.12);cursor:pointer;">Unlock Surprise 💌</button>
+            <div id="passwordError" style="color:#fb7185;font-size:1rem;margin-top:10px;display:none;">Wrong name! Try again 💔</div>
+        </div>
+    </div>
+    <!-- Main Card -->
+    <div class="birthday-card" id="birthdayCard">
+        <h1 class="title">Happy Birthday My Love!</h1>
+        <div class="heart-icons">
+            <span>💖</span>
+            <span>💗</span>
+            <span>✨</span>
+        </div>
+        <p class="subtitle">To the most amazing woman in my life</p>
+        <p class="message">
+            Every moment with you is a gift, and today we celebrate the greatest gift of all – <b>YOU!</b> 🌹
+        </p>
+        <button class="begin-button" id="beginButton">
+            <span class="button-text">
+                Begin Your Surprise! <span>💖</span>
+            </span>
+        </button>
+    </div>
+    <!-- Hidden Audio -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundjay.com/misc/sounds/romantic-music.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        // Fade in each element one by one after card appears
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                document.querySelector('.title').style.opacity = 1;
+                setTimeout(() => {
+                    document.querySelector('.heart-icons').style.opacity = 1;
+                    setTimeout(() => {
+                        document.querySelector('.subtitle').style.opacity = 1;
+                        setTimeout(() => {
+                            document.querySelector('.message').style.opacity = 1;
+                            setTimeout(() => {
+                                document.querySelector('.begin-button').style.opacity = 1;
+                            }, 350);
+                        }, 350);
+                    }, 350);
+                }, 350);
+            }, 400);
+
+            // Floating hearts
+            const heartsContainer = document.getElementById('floatingHearts');
+            for (let i = 0; i < 15; i++) createFloatingHeart(heartsContainer);
+
+            // Sparkles
+            const sparklesContainer = document.getElementById('sparkles');
+            for (let i = 0; i < 25; i++) createSparkle(sparklesContainer);
+
+            // Music control
+            const musicControl = document.getElementById('musicControl');
+            const musicIcon = document.getElementById('musicIcon');
+            const bgMusic = document.getElementById('bgMusic');
+            let isPlaying = false;
+            musicControl.addEventListener('click', function() {
+                if (isPlaying) {
+                    bgMusic.pause();
+                    musicIcon.textContent = '🔇';
+                    isPlaying = false;
+                } else {
+                    bgMusic.play().catch(() => {});
+                    musicIcon.textContent = '🎵';
+                    isPlaying = true;
+                }
+            });
+
+            // Begin button
+            const beginButton = document.getElementById('beginButton');
+            const birthdayCard = document.getElementById('birthdayCard');
+            beginButton.addEventListener('click', function() {
+                birthdayCard.classList.add('celebrate');
+                for (let i = 0; i < 20; i++) {
+                    createCelebrationHeart();
+                }
+                setTimeout(() => {
+                    birthdayCard.classList.remove('celebrate');
+                    window.location.href = 'memory.html'; // Redirect to memory.html
+                }, 800);
+            });
+        });
+
+        function createFloatingHeart(container) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '💖';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.top = Math.random() * 100 + '%';
+            heart.style.animationDuration = (4 + Math.random() * 4) + 's';
+            heart.style.animationDelay = Math.random() * 3 + 's';
+            container.appendChild(heart);
+        }
+        function createSparkle(container) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.animationDuration = (1 + Math.random() * 2) + 's';
+            sparkle.style.animationDelay = Math.random() * 2 + 's';
+            container.appendChild(sparkle);
+        }
+        function createCelebrationHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '💖';
+            heart.style.position = 'fixed';
+            heart.style.left = '50%';
+            heart.style.top = '50%';
+            heart.style.fontSize = '24px';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '1000';
+            heart.style.animation = 'celebrationHeart 2s ease-out forwards';
+            const angle = Math.random() * 360;
+            const distance = 100 + Math.random() * 200;
+            heart.style.setProperty('--end-x', Math.cos(angle * Math.PI / 180) * distance + 'px');
+            heart.style.setProperty('--end-y', Math.sin(angle * Math.PI / 180) * distance + 'px');
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 2000);
+        }
+        // Add celebration heart animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes celebrationHeart {
+                0% {
+                    transform: translate(-50%, -50%) scale(0);
+                    opacity: 1;
+                }
+                50% {
+                    transform: translate(calc(-50% + var(--end-x, 0px)), calc(-50% + var(--end-y, 0px))) scale(1);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translate(calc(-50% + var(--end-x, 0px)), calc(-50% + var(--end-y, 0px))) scale(0);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Password modal logic
+        document.getElementById('birthdayCard').style.display = 'none';
+        document.getElementById('floatingHearts').style.display = 'none';
+        document.getElementById('sparkles').style.display = 'none';
+        document.getElementById('musicControl').style.display = 'none';
+
+        document.getElementById('passwordBtn').onclick = function() {
+            const val = document.getElementById('passwordInput').value.trim().toLowerCase();
+            if (val === 'madam ji') {
+                document.getElementById('passwordModal').style.display = 'none';
+                document.getElementById('birthdayCard').style.display = '';
+                document.getElementById('floatingHearts').style.display = '';
+                document.getElementById('sparkles').style.display = '';
+                document.getElementById('musicControl').style.display = '';
+            } else {
+                document.getElementById('passwordError').style.display = 'block';
+            }
+        };
+        document.getElementById('passwordInput').oninput = function() {
+            document.getElementById('passwordError').style.display = 'none';
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday! - Magical Memory Celebration</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Mirror of Memories Initial Screen */
+        .mirror-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffeef8 0%, #f8d7da 30%, #e1bee7 70%, #d1c4e9 100%);
+            background-size: 400% 400%;
+            animation: gradientFlow 8s ease infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            transition: all 1s ease-in-out;
+            overflow: hidden;
+        }
+
+        .mirror-screen.hidden {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        .mirror-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #8e44ad;
+            font-weight: 700;
+            margin-bottom: 50px;
+            text-align: center;
+            animation: fadeInDown 1.5s ease-out;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .mirror-title::before {
+            content: '✨';
+            position: absolute;
+            left: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            animation: sparkleRotate 3s ease-in-out infinite;
+        }
+
+        .mirror-title::after {
+            content: '✨';
+            position: absolute;
+            right: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            animation: sparkleRotate 3s ease-in-out infinite 1.5s;
+        }
+
+        .mirror-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 192, 203, 0.8));
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 80px 100px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            animation: fadeInUp 1.5s ease-out 0.8s both;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 20px 40px rgba(255, 105, 180, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        .mirror-card:hover {
+            transform: translateY(-10px) scale(1.08);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 182, 193, 0.9));
+            box-shadow: 
+                0 30px 60px rgba(255, 105, 180, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .mirror-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 4s infinite;
+        }
+
+        .mirror-card::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            pointer-events: none;
+        }
+
+        .mirror-hearts-container {
+            position: relative;
+            margin-bottom: 30px;
+            z-index: 2;
+        }
+
+        .mirror-hearts {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        .mirror-heart {
+            font-size: 3rem;
+            animation: heartFloat 2.5s ease-in-out infinite alternate;
+            filter: drop-shadow(2px 4px 8px rgba(255, 105, 180, 0.3));
+        }
+
+        .mirror-heart:nth-child(1) {
+            animation-delay: 0s;
+            color: #ff69b4;
+        }
+
+        .mirror-heart:nth-child(2) {
+            animation-delay: 0.8s;
+            color: #ff1493;
+            font-size: 3.5rem;
+        }
+
+        .mirror-heart:nth-child(3) {
+            animation-delay: 1.6s;
+            color: #ff69b4;
+        }
+
+        .floating-mini-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .mini-heart {
+            position: absolute;
+            font-size: 1.2rem;
+            color: rgba(255, 105, 180, 0.6);
+            animation: floatMiniHeart 4s ease-in-out infinite;
+        }
+
+        .mirror-text {
+            color: #6b46c1;
+            font-size: 1.4rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .mirror-subtitle {
+            color: #8e44ad;
+            font-size: 1rem;
+            font-weight: 400;
+            position: relative;
+            z-index: 2;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        /* Floating background hearts */
+        .bg-heart {
+            position: absolute;
+            color: rgba(255, 105, 180, 0.4);
+            font-size: 2rem;
+            animation: floatBg 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        /* Main Memory Celebration Content (Hidden Initially) */
+        .main-content {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1s ease-in-out;
+            pointer-events: none;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: all;
+        }
+
+        body {
+            background: linear-gradient(135deg, #7928CA 0%, #FF0080 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            color: white;
+        }
+
+        .birthday-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.15' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.7;
+            z-index: -1;
+        }
+
+        .confetti-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffd1f9;
+            top: -20px;
+            opacity: 0;
+        }
+
+        .birthday-cake {
+            position: fixed;
+            bottom: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            z-index: -1;
+            opacity: 0.7;
+            transform: rotate(-15deg);
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .balloon {
+            position: fixed;
+            width: 60px;
+            height: 70px;
+            z-index: -1;
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.2));
+            animation: floatBalloon 15s linear infinite;
+        }
+
+        .balloon::before {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.7);
+            top: 100%;
+            left: 50%;
+        }
+
+        .memory-lane-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .gallery-container {
+            position: relative;
+            margin: 2rem 0;
+            perspective: 1000px;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 2rem;
+            padding: 2rem 1rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        }
+
+        .gallery::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .gallery::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .gallery::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+        }
+
+        .memory-card {
+            flex: 0 0 auto;
+            width: 300px;
+            height: 400px;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transform: translateY(50px) rotate(var(--rotate, 0deg));
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 10px solid white;
+            transform-style: preserve-3d;
+            z-index: 1;
+        }
+
+        .memory-card.visible {
+            transform: translateY(0) rotate(var(--rotate, 0deg));
+            opacity: 1;
+        }
+
+        .memory-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .memory-card:hover .memory-img {
+            transform: scale(1.1);
+        }
+
+        .memory-caption {
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 1.5rem;
+            transition: bottom 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        .memory-card:hover .memory-caption {
+            bottom: 0;
+        }
+
+        .memory-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .card-decorations {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .card-sticker {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            z-index: 3;
+            filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.5));
+            animation: wiggle 3s ease-in-out infinite;
+        }
+
+        .card-sticker-top-right {
+            top: -15px;
+            right: -15px;
+            transform: rotate(15deg);
+        }
+
+        .card-sticker-bottom-left {
+            bottom: -15px;
+            left: -15px;
+            transform: rotate(-15deg);
+            animation-delay: 1s;
+        }
+
+        .card-ribbon {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: 100px;
+            height: 100px;
+            background: #FF0080;
+            transform: rotate(-45deg) translateX(-35px) translateY(-10px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            z-index: 4;
+        }
+
+        .card-ribbon-text {
+            position: absolute;
+            bottom: 15px;
+            left: 25px;
+            transform: rotate(45deg);
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Special Memory Button - Upper Left Corner */
+        .special-memory-corner {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            z-index: 100;
+            animation: fadeInCorner 2s ease-out 2s both;
+        }
+
+        .special-memory-btn {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 182, 193, 0.9));
+            color: #8e44ad;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 15px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(20px);
+            box-shadow: 
+                0 10px 25px rgba(255, 105, 180, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: cornerFloat 3s ease-in-out infinite;
+        }
+
+        .special-memory-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(255, 192, 203, 0.95));
+            box-shadow: 
+                0 20px 40px rgba(255, 105, 180, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 1);
+        }
+
+        .special-memory-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 4s infinite;
+        }
+
+        .special-memory-icon {
+            font-size: 1.3rem;
+            animation: iconPulse 2s ease-in-out infinite;
+            position: relative;
+            z-index: 2;
+        }
+
+        .special-memory-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* More Surprise Button - Right Side */
+        .more-surprise-right {
+            position: fixed;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            z-index: 100;
+            animation: fadeInSide 2s ease-out 2.5s both;
+        }
+
+        .more-surprise-btn {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 182, 193, 0.9));
+            color: #8e44ad;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            border-radius: 25px;
+            padding: 20px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(20px);
+            box-shadow: 
+                0 15px 35px rgba(255, 105, 180, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            min-width: 160px;
+            text-align: center;
+            animation: buttonFloat 3s ease-in-out infinite;
+        }
+
+        .more-surprise-btn:hover {
+            transform: translateY(-8px) scale(1.05);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(255, 192, 203, 0.95));
+            box-shadow: 
+                0 25px 50px rgba(255, 105, 180, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 1);
+        }
+
+        .more-surprise-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 4s infinite;
+        }
+
+        .more-surprise-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            animation: iconPulse 2s ease-in-out infinite;
+            position: relative;
+            z-index: 2;
+        }
+
+        .more-surprise-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.1rem;
+            font-weight: 700;
+            line-height: 1.2;
+            position: relative;
+            z-index: 2;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+            animation: fadeInUp 1.5s ease-out 0.5s backwards;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        #nextButton {
+            background: linear-gradient(45deg, #FF0080, #7928CA);
+            font-size: 1.1rem;
+            padding: 1rem 2rem;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        #nextButton::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        #nextButton:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .floating-gifts {
+            position: fixed;
+            z-index: -1;
+        }
+
+        .gift {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+        }
+
+        .gift-1 {
+            top: 20%;
+            left: 5%;
+            animation: float 7s ease-in-out infinite;
+        }
+
+        .gift-2 {
+            top: 70%;
+            left: 8%;
+            animation: float 9s ease-in-out infinite 1s;
+        }
+
+        .gift-3 {
+            top: 15%;
+            right: 7%;
+            animation: float 8s ease-in-out infinite 0.5s;
+        }
+
+        .gift-4 {
+            top: 60%;
+            right: 5%;
+            animation: float 10s ease-in-out infinite 1.5s;
+        }
+
+        .cake-bubbles {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100px;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: bubbleRise linear infinite;
+        }
+
+        /* Mirror Screen Animations */
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInSide {
+            0% {
+                opacity: 0;
+                transform: translateY(-50%) translateX(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        @keyframes fadeInCorner {
+            0% {
+                opacity: 0;
+                transform: translateX(-30px) translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        @keyframes sparkleRotate {
+            0%, 100% {
+                transform: translateY(-50%) rotate(0deg) scale(1);
+            }
+            50% {
+                transform: translateY(-50%) rotate(180deg) scale(1.2);
+            }
+        }
+
+        @keyframes heartFloat {
+            0% {
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-15px) scale(1.1) rotate(5deg);
+            }
+        }
+
+        @keyframes floatMiniHeart {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-10px) rotate(10deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes floatBg {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.4;
+            }
+            50% {
+                transform: translateY(-30px) rotate(15deg);
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes buttonFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes cornerFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes iconPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Main Content Animations */
+        @keyframes floatBalloon {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%;
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.7;
+            }
+            100% {
+                left: 100%;
+                opacity: 0;
+            }
+        }
+
+        @keyframes wiggle {
+            0%, 100% {
+                transform: rotate(15deg);
+            }
+            50% {
+                transform: rotate(-5deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            }
+        }
+
+        @keyframes bubbleRise {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(var(--translate-x));
+                opacity: 0;
+            }
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(var(--rotate-deg));
+                opacity: 0;
+            }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .mirror-title {
+                font-size: 2.8rem;
+            }
+            
+            .mirror-card {
+                padding: 60px 70px;
+                margin: 20px;
+            }
+            
+            .memory-card {
+                width: 250px;
+                height: 330px;
+            }
+            
+            .special-memory-corner {
+                top: 15px;
+                left: 15px;
+            }
+            
+            .special-memory-btn {
+                padding: 12px 16px;
+                font-size: 0.8rem;
+            }
+            
+            .more-surprise-right {
+                right: 15px;
+            }
+            
+            .more-surprise-btn {
+                min-width: 140px;
+                padding: 15px 20px;
+            }
+            
+            .gift, .birthday-cake {
+                transform: scale(0.8);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mirror-title {
+                font-size: 2.2rem;
+            }
+            
+            .mirror-card {
+                padding: 50px 60px;
+                margin: 20px;
+            }
+            
+            .memory-card {
+                width: 220px;
+                height: 300px;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .special-memory-corner {
+                top: 10px;
+                left: 10px;
+            }
+            
+            .special-memory-btn {
+                padding: 10px 14px;
+                font-size: 0.75rem;
+            }
+            
+            .special-memory-text {
+                font-size: 0.9rem;
+            }
+            
+            .more-surprise-btn {
+                min-width: 120px;
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mirror of Memories Initial Screen -->
+    <div class="mirror-screen" id="mirrorScreen">
+        <!-- Background floating hearts -->
+        <div class="bg-heart" style="top: 10%; left: 8%; animation-delay: 0s;">💖</div>
+        <div class="bg-heart" style="top: 20%; right: 12%; animation-delay: 1s;">💕</div>
+        <div class="bg-heart" style="bottom: 25%; left: 15%; animation-delay: 2s;">💖</div>
+        <div class="bg-heart" style="bottom: 35%; right: 8%; animation-delay: 0.5s;">💕</div>
+        <div class="bg-heart" style="top: 65%; left: 3%; animation-delay: 1.5s;">💖</div>
+        <div class="bg-heart" style="top: 75%; right: 20%; animation-delay: 2.5s;">💕</div>
+        <div class="bg-heart" style="top: 40%; left: 85%; animation-delay: 3s;">💖</div>
+        <div class="bg-heart" style="top: 50%; right: 85%; animation-delay: 3.5s;">💕</div>
+
+        <h1 class="mirror-title">Mirror of Memories</h1>
+        
+        <div class="mirror-card" id="mirrorCard">
+            <div class="floating-mini-hearts">
+                <div class="mini-heart" style="top: 20%; left: 15%; animation-delay: 0s;">💕</div>
+                <div class="mini-heart" style="top: 30%; right: 20%; animation-delay: 1s;">💖</div>
+                <div class="mini-heart" style="bottom: 25%; left: 10%; animation-delay: 2s;">💕</div>
+                <div class="mini-heart" style="bottom: 35%; right: 15%; animation-delay: 1.5s;">💖</div>
+            </div>
+            
+            <div class="mirror-hearts-container">
+                <div class="mirror-hearts">
+                    <span class="mirror-heart">💕</span>
+                    <span class="mirror-heart">💖</span>
+                    <span class="mirror-heart">💕</span>
+                </div>
+            </div>
+            
+            <p class="mirror-text">Click to unlock memories</p>
+            <p class="mirror-subtitle">A journey through our beautiful moments</p>
+        </div>
+    </div>
+
+    <!-- Main Memory Celebration Content -->
+    <div class="main-content" id="mainContent">
+        <div class="birthday-bg"></div>
+        <div class="confetti-container" id="confetti-container"></div>
+        
+        <!-- Special Memory Button - Upper Left Corner -->
+        <div class="special-memory-corner">
+            <button class="special-memory-btn" id="specialMemoryBtn">
+                <span class="special-memory-icon">📸</span>
+                <span class="special-memory-text">Special Memory</span>
+            </button>
+        </div>
+        
+        
+        <!-- Floating gifts -->
+        <div class="floating-gifts">
+            <div class="gift gift-1">
+                <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="10" y="30" width="60" height="40" rx="3" fill="#FF3CAC" />
+                    <rect x="10" y="30" width="60" height="10" rx="3" fill="#FF3CAC" stroke="#784BA0" stroke-width="2" />
+                    <rect x="35" y="30" width="10" height="40" fill="#784BA0" />
+                    <rect x="25" y="10" width="30" height="20" rx="10" fill="#784BA0" />
+                    <path d="M40 10 L40 30" stroke="#784BA0" stroke-width="6" />
+                </svg>
+            </div>
+            <div class="gift gift-2">
+                <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="10" y="30" width="60" height="40" rx="3" fill="#2CD3E1" />
+                    <rect x="10" y="30" width="60" height="10" rx="3" fill="#2CD3E1" stroke="#A100FFFF" stroke-width="2" />
+                    <rect x="35" y="30" width="10" height="40" fill="#A100FFFF" />
+                    <rect x="25" y="10" width="30" height="20" rx="10" fill="#A100FFFF" />
+                    <path d="M40 10 L40 30" stroke="#A100FFFF" stroke-width="6" />
+                </svg>
+            </div>
+            <div class="gift gift-3">
+                <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="10" y="30" width="60" height="40" rx="3" fill="#FBAB7E" />
+                    <rect x="10" y="30" width="60" height="10" rx="3" fill="#FBAB7E" stroke="#8BC6EC" stroke-width="2" />
+                    <rect x="35" y="30" width="10" height="40" fill="#8BC6EC" />
+                    <rect x="25" y="10" width="30" height="20" rx="10" fill="#8BC6EC" />
+                    <path d="M40 10 L40 30" stroke="#8BC6EC" stroke-width="6" />
+                </svg>
+            </div>
+            <div class="gift gift-4">
+                <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="10" y="30" width="60" height="40" rx="3" fill="#FF9A8B" />
+                    <rect x="10" y="30" width="60" height="10" rx="3" fill="#FF9A8B" stroke="#FF6A88" stroke-width="2" />
+                    <rect x="35" y="30" width="10" height="40" fill="#FF6A88" />
+                    <rect x="25" y="10" width="30" height="20" rx="10" fill="#FF6A88" />
+                    <path d="M40 10 L40 30" stroke="#FF6A88" stroke-width="6" />
+                </svg>
+            </div>
+        </div>
+        
+        <!-- Birthday cake -->
+        <div class="birthday-cake">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Cake base -->
+                <rect x="40" y="120" width="120" height="40" rx="5" fill="#FF9A8B" stroke="#FF6A88" stroke-width="2" />
+                <rect x="30" y="80" width="140" height="40" rx="5" fill="#FBAB7E" stroke="#FF6A88" stroke-width="2" />
+                <rect x="20" y="40" width="160" height="40" rx="5" fill="#F7CE68" stroke="#FF6A88" stroke-width="2" />
+                
+                <!-- Candles -->
+                <rect x="60" y="20" width="8" height="20" rx="2" fill="#FBAB7E" />
+                <circle cx="64" cy="18" r="4" fill="#FF4500" />
+                <rect x="100" y="10" width="8" height="30" rx="2" fill="#FBAB7E" />
+                <circle cx="104" cy="8" r="4" fill="#FF4500" />
+                <rect x="140" y="20" width="8" height="20" rx="2" fill="#FBAB7E" />
+                <circle cx="144" cy="18" r="4" fill="#FF4500" />
+                
+                <!-- Decorations -->
+                <circle cx="50" cy="60" r="5" fill="#FF3CAC" />
+                <circle cx="80" cy="60" r="5" fill="#784BA0" />
+                <circle cx="110" cy="60" r="5" fill="#FF3CAC" />
+                <circle cx="140" cy="60" r="5" fill="#784BA0" />
+                <circle cx="170" cy="60" r="5" fill="#FF3CAC" />
+                
+                <circle cx="65" cy="100" r="5" fill="#784BA0" />
+                <circle cx="95" cy="100" r="5" fill="#FF3CAC" />
+                <circle cx="125" cy="100" r="5" fill="#784BA0" />
+                <circle cx="155" cy="100" r="5" fill="#FF3CAC" />
+                
+                <circle cx="80" cy="140" r="5" fill="#FF3CAC" />
+                <circle cx="110" cy="140" r="5" fill="#784BA0" />
+                <circle cx="140" cy="140" r="5" fill="#FF3CAC" />
+            </svg>
+        </div>
+        
+        <!-- Balloons -->
+        <div class="balloon" style="left: 10%; animation-duration: 18s;">
+            <svg viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg">
+                <path d="M30 50 C46.5685 50 60 38.8071 60 25 C60 11.1929 46.5685 0 30 0 C13.4315 0 0 11.1929 0 25 C0 38.8071 13.4315 50 30 50 Z" fill="#FF3CAC" />
+            </svg>
+        </div>
+        <div class="balloon" style="left: 80%; animation-duration: 20s; animation-delay: 2s;">
+            <svg viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg">
+                <path d="M30 50 C46.5685 50 60 38.8071 60 25 C60 11.1929 46.5685 0 30 0 C13.4315 0 0 11.1929 0 25 C0 38.8071 13.4315 50 30 50 Z" fill="#2CD3E1" />
+            </svg>
+        </div>
+        <div class="balloon" style="left: 20%; top: 30%; animation-duration: 25s; animation-delay: 5s;">
+            <svg viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg">
+                <path d="M30 50 C46.5685 50 60 38.8071 60 25 C60 11.1929 46.5685 0 30 0 C13.4315 0 0 11.1929 0 25 C0 38.8071 13.4315 50 30 50 Z" fill="#FF9A8B" />
+            </svg>
+        </div>
+        
+        <!-- Cake bubbles -->
+        <div class="cake-bubbles" id="cake-bubbles"></div>
+        
+        <!-- Main content -->
+        <div class="memory-lane-container">
+            <div class="gallery-container">
+                <div class="gallery" id="memories">
+                    <!-- Memory cards will be added here via JavaScript -->
+                </div>
+            </div>
+            
+            <div class="navigation-buttons">
+                <button class="btn" id="nextButton">More Birthday Surprises!</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mirrorScreen = document.getElementById('mirrorScreen');
+            const mirrorCard = document.getElementById('mirrorCard');
+            const mainContent = document.getElementById('mainContent');
+
+            // Mirror card click handler
+            mirrorCard.addEventListener('click', function() {
+                // Hide mirror screen with animation
+                mirrorScreen.classList.add('hidden');
+                
+                // Show main content after delay
+                setTimeout(() => {
+                    mainContent.classList.add('visible');
+                    initializeMainContent();
+                }, 500);
+            });
+
+            function initializeMainContent() {
+                // Memory cards data
+                const memories = [
+                    {
+                        img: "pic1.jpg",
+                        title: "Attention Demander",
+                        description: "",
+                        date: "2023-07-15",
+                        rotate: "-3deg"
+                    },
+                    {
+                        img: "pic2.jpg",
+                        title: "Pure Love ✨",
+                        description: "",
+                        date: "2023-05-22",
+                        rotate: "2deg"
+                    },
+                    {
+                        img: "pic3.jpg",
+                        title: "Perfect Love",
+                        description: "",
+                        date: "2023-09-03",
+                        rotate: "-1deg"
+                    },
+                    {
+                        img: "pic4.jpg",
+                        title: "Punishment",
+                        description: "",
+                        date: "2024-01-12",
+                        rotate: "1deg"
+                    },
+                    {
+                        img: "pic5.jpg",
+                        title: "Timeless Love",
+                        description: "",
+                        date: "2023-08-17",
+                        rotate: "-2deg"
+                    },
+                    {
+                        img: "pic6.jpg",
+                        title: "Love with all hearts",
+                        description: "",
+                        date: "2023-11-30",
+                        rotate: "3deg"
+                    },
+                    {
+                        img: "pic8.jpg",
+                        title: "Universal Love 💫",
+                        description: "",
+                        date: "2023-10-09",
+                        rotate: "-1.5deg"
+                    }
+                ];
+                
+                // Generate confetti
+                const confettiContainer = document.getElementById('confetti-container');
+                const confettiColors = ['#FF3CAC', '#784BA0', '#2CD3E1', '#FBAB7E', '#FF9A8B', '#F7CE68'];
+                
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    confetti.style.opacity = Math.random() * 0.8 + 0.2;
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    confetti.style.setProperty('--rotate-deg', `${Math.random() * 360}deg`);
+                    confetti.style.animation = `confettiFall ${Math.random() * 5 + 3}s linear infinite ${Math.random() * 5}s`;
+                    confettiContainer.appendChild(confetti);
+                }
+                
+                // Generate cake bubbles
+                const cakeBubbles = document.getElementById('cake-bubbles');
+                
+                for (let i = 0; i < 30; i++) {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'bubble';
+                    bubble.style.left = Math.random() * 100 + '%';
+                    bubble.style.width = Math.random() * 20 + 10 + 'px';
+                    bubble.style.height = bubble.style.width;
+                    bubble.style.opacity = Math.random() * 0.5 + 0.1;
+                    bubble.style.animationDuration = Math.random() * 5 + 3 + 's';
+                    bubble.style.animationDelay = Math.random() * 3 + 's';
+                    bubble.style.setProperty('--translate-x', `${Math.random() * 100 - 50}px`);
+                    cakeBubbles.appendChild(bubble);
+                }
+                
+                // Generate memory cards
+                const memoryGallery = document.getElementById('memories');
+                
+                function renderMemories(memoriesArray) {
+                    memoryGallery.innerHTML = '';
+                    
+                    memoriesArray.forEach((memory, index) => {
+                        const card = document.createElement('div');
+                        card.className = 'memory-card';
+                        card.style.setProperty('--rotate', memory.rotate);
+                        
+                        // Add a slight delay for each card for a staggered animation effect
+                        setTimeout(() => {
+                            card.classList.add('visible');
+                        }, index * 200);
+                        
+                        card.innerHTML = `
+                            <img src="${memory.img}" alt="${memory.title}" class="memory-img">
+                            <div class="memory-caption">
+                                <h3>${memory.title}</h3>
+                                <p>${memory.description}</p>
+                            </div>
+                            <div class="card-decorations">
+                                <div class="card-ribbon">
+                                    <span class="card-ribbon-text">Memory</span>
+                                </div>
+                                <div class="card-sticker card-sticker-top-right">
+                                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="20" cy="20" r="20" fill="#FFD700" />
+                                        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#FF3CAC" font-weight="bold" font-size="12">✨</text>
+                                    </svg>
+                                </div>
+                                <div class="card-sticker card-sticker-bottom-left">
+                                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="20" cy="20" r="20" fill="#FF3CAC" />
+                                        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#FFD700" font-weight="bold" font-size="12">❤️</text>
+                                    </svg>
+                                </div>
+                            </div>
+                        `;
+                        
+                        memoryGallery.appendChild(card);
+                    });
+                }
+                
+                // Initial render of memories
+                renderMemories(memories);
+                
+                // Button event listeners
+                document.getElementById('specialMemoryBtn').addEventListener('click', function(e) {
+                    const btn = e.currentTarget;
+                    btn.style.transition = 'all 1s cubic-bezier(0.68,-0.55,0.27,1.55)';
+                    btn.style.transform = 'translate(-100px, -100px) scale(1.2) rotate(-10deg)';
+                    btn.style.opacity = '0.8';
+                    btn.style.boxShadow = '0 0 40px 15px #ff69b4, 0 0 0 6px #fff3f8';
+                    btn.style.background = 'linear-gradient(135deg, #ff69b4 60%, #ffd1f9 100%)';
+                    btn.querySelector('.special-memory-icon').textContent = '💌';
+                    
+                    // Add floating hearts animation
+                    for (let i = 0; i < 8; i++) {
+                        const heart = document.createElement('div');
+                        heart.textContent = '💖';
+                        heart.style.position = 'fixed';
+                        heart.style.left = (btn.getBoundingClientRect().left + 20 + Math.random() * 30) + 'px';
+                        heart.style.top = (btn.getBoundingClientRect().top + 5 + Math.random() * 20) + 'px';
+                        heart.style.fontSize = (18 + Math.random() * 12) + 'px';
+                        heart.style.opacity = '0.8';
+                        heart.style.pointerEvents = 'none';
+                        heart.style.zIndex = '9999';
+                        heart.style.transition = 'transform 1s cubic-bezier(0.68,-0.55,0.27,1.55), opacity 1s';
+                        document.body.appendChild(heart);
+                        
+                        setTimeout(() => {
+                            heart.style.transform = `translate(-${60 + Math.random() * 60}px, -${80 + Math.random() * 80}px) scale(1.3) rotate(${Math.random() * 40 - 20}deg)`;
+                            heart.style.opacity = '0';
+                        }, 50);
+                        
+                        setTimeout(() => heart.remove(), 1200);
+                    }
+                    
+                    // After animation, go to next page
+                    setTimeout(() => {
+                        window.location.href = 'romantic-video.html'; // Redirect to romantic-video.html
+                    }, 1000);
+                });
+                
+                document.getElementById('moreSurpriseBtn').addEventListener('click', function() {
+                    window.location.href = 'more-surprises.html';
+                });
+                
+                document.getElementById('nextButton').addEventListener('click', function() {
+                    window.location.href = 'cake.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

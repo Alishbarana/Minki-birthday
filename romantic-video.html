@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Romantic Reel</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600;800&display=swap');
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at 30% 30%, #4b0082, #6a0dad, #8a2be2);
+      background-size: 300% 300%;
+      animation: bgMove 20s ease infinite;
+      overflow-x: hidden;
+    }
+
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .video-wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-bottom: 80px;
+    }
+
+    .video-romantic {
+      width: 360px;
+      height: 570px;
+      border-radius: 30px;
+      box-shadow:
+        0 0 60px #8a2be2,
+        0 0 90px #6a0dad,
+        0 8px 32px rgba(138, 43, 226, 0.25);
+      object-fit: cover;
+      background: black;
+    }
+
+    .surprise-button {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+    }
+
+    .surprise-btn {
+      background: linear-gradient(145deg, #6a0dad, #8a2be2);
+      color: white;
+      border: 4px solid white;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      font-size: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+      animation: bounceArrow 1.5s infinite ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease;
+    }
+
+    .surprise-btn:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes bounceArrow {
+      0%, 100% { transform: translateY(-6px); }
+      50% { transform: translateY(6px); }
+    }
+
+    .romantic-overlay, .floating-hearts, .sparkles {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .heart {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 1.1rem;
+      animation: floatHeart 12s linear infinite;
+      text-shadow: 0 0 6px rgba(255, 105, 180, 0.5);
+    }
+
+    @keyframes floatHeart {
+      0% { transform: translateY(100vh) translateX(0px) rotate(0deg); opacity: 0; }
+      10%,90% { opacity: 0.5; }
+      100% { transform: translateY(-100px) translateX(30px) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="romantic-overlay"></div>
+  <div class="floating-hearts" id="floatingHearts"></div>
+
+  <div class="main-content">
+    <div class="video-wrapper">
+      <video class="video-romantic" id="romanticVideo" autoplay loop playsinline controls>
+        <source src="hbd.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+
+      <video class="video-romantic" id="secondVideo" autoplay loop playsinline muted>
+        <source src="hbd1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+  <!-- Surprise Button -->
+  <div class="surprise-button">
+    <button class="surprise-btn" id="surpriseBtn">➤</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Surprise Button Function
+      const surpriseBtn = document.getElementById('surpriseBtn');
+      surpriseBtn.addEventListener('click', function () {
+        window.location.href = 'cake.html';
+      });
+
+      // Floating Hearts
+      const heartsContainer = document.getElementById('floatingHearts');
+      const heartSymbols = ['💜', '💖', '💘', '💗', '💕'];
+      setInterval(() => {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.fontSize = (Math.random() * 0.4 + 0.9) + 'rem';
+        heart.style.animationDuration = (Math.random() * 3 + 10) + 's';
+        heart.style.animationDelay = Math.random() * 2 + 's';
+        heartsContainer.appendChild(heart);
+        setTimeout(() => { heart.remove(); }, 14000);
+      }, 2500);
+    });
+  </script>
+</body>
+</html>

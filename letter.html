@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Madam Ji</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Update gradient to match screenshot */
+            background: linear-gradient(135deg, #6a5af9 0%, #a685fa 50%, #ff71b6 100%);
+            height: 100vh;
+            overflow: hidden; /* Remove page scroll */
+            position: relative;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Floating particles background */
+        .particles-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: floatParticle 8s linear infinite;
+        }
+
+        /* Large decorative circles */
+        .deco-circle {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .deco-circle-1 {
+            top: 10%;
+            left: 10%;
+            width: 120px;
+            height: 120px;
+            background: #ffd700;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .deco-circle-2 {
+            bottom: 20%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            background: #87ceeb;
+            animation: bounce 3s ease-in-out infinite;
+        }
+
+        .deco-circle-3 {
+            top: 50%;
+            right: 10%;
+            width: 60px;
+            height: 60px;
+            background: #98fb98;
+            animation: pulse 3.5s ease-in-out infinite;
+        }
+
+        /* Main content container */
+        .letter-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Letter card */
+        .letter-card {
+            background: white;
+            color: #333;
+            border-radius: 25px;
+            max-width: 700px;
+            width: 100%;
+            height: 80vh; /* Fixed height for the card */
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: slideUp 1s ease-out 0.5s forwards;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .letter-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 4s linear infinite;
+            z-index: 1;
+        }
+
+        /* Header ribbon */
+        .letter-header {
+            /* Use bright pink ribbon like screenshot */
+            background: linear-gradient(90deg, #ff71b6 0%, #ff9ecd 100%);
+            color: white;
+            text-align: center;
+            padding: 1.5rem 2rem;
+            border-radius: 20px 20px 0 0;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0; /* Don't shrink the header */
+            z-index: 2;
+        }
+
+        .letter-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: headerShine 3s ease-in-out infinite;
+        }
+
+        .letter-header h1 {
+            font-size: 2.5rem;
+            font-family: 'Dancing Script', cursive;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Scrollable content area */
+        .letter-content-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            padding: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Custom scrollbar for the content area */
+        .letter-content-wrapper::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .letter-content-wrapper::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .letter-content-wrapper::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ff71b6, #a685fa);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .letter-content-wrapper::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #ff9ecd, #b899fb);
+        }
+
+        /* For Firefox */
+        .letter-content-wrapper {
+            scrollbar-width: thin;
+            scrollbar-color: #ff71b6 #f1f1f1;
+        }
+
+        /* Letter content */
+        .letter-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #444;
+        }
+
+        .greeting {
+            /* Purple accent for greeting */
+            color: #a685fa;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .letter-content p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        .highlight {
+            /* Pink accent for highlight and celebration */
+            color: #ff71b6;
+            font-weight: 600;
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 2rem 0;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .signature {
+            text-align: right;
+            font-style: italic;
+            color: #666;
+            margin-top: 2rem;
+            font-size: 0.95rem;
+        }
+
+        /* Decorative elements */
+        .heart-decoration {
+            position: absolute;
+            color: #ff6b6b;
+            font-size: 1.5rem;
+            opacity: 0.7;
+            animation: heartFloat 4s ease-in-out infinite;
+            z-index: 3;
+        }
+
+        .heart-1 {
+            top: 15%;
+            right: 10%;
+            animation-delay: 0s;
+        }
+
+        .heart-2 {
+            bottom: 20%;
+            left: 8%;
+            animation-delay: 1s;
+        }
+
+        .heart-3 {
+            top: 60%;
+            right: 5%;
+            animation-delay: 2s;
+        }
+
+        /* Final message button */
+        .final-message {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .celebration-text {
+            font-size: 1.3rem;
+            color: #ff71b6;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-family: 'Dancing Script', cursive;
+            animation: textGlow 2s ease-in-out infinite;
+        }
+
+        /* Add more content for demonstration */
+        .extra-content {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+        }
+
+        .extra-content h3 {
+            color: #a685fa;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .memory-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(255, 113, 182, 0.1), rgba(166, 133, 250, 0.1));
+            border-radius: 15px;
+            border-left: 4px solid #ff71b6;
+        }
+
+        /* Animations */
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) translateX(0px); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100px) translateX(50px); opacity: 0; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        @keyframes headerShine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.5; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes heartFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(10deg); }
+        }
+
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 5px rgba(255, 107, 107, 0.5); }
+            50% { text-shadow: 0 0 15px rgba(255, 107, 107, 0.8), 0 0 25px rgba(255, 107, 107, 0.6); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .letter-card { 
+                height: 85vh;
+                margin: 1rem; 
+            }
+            .letter-content-wrapper { 
+                padding: 2rem; 
+            }
+            .letter-header h1 { 
+                font-size: 2rem; 
+            }
+            .letter-content { 
+                font-size: 1rem; 
+            }
+            .deco-circle-1 { 
+                width: 80px; 
+                height: 80px; 
+            }
+            .deco-circle-2 { 
+                width: 60px; 
+                height: 60px; 
+            }
+        }
+
+        @media (max-width: 480px) {
+            .letter-card { 
+                height: 90vh;
+            }
+            .letter-content-wrapper { 
+                padding: 1.5rem; 
+            }
+            .letter-header { 
+                padding: 1rem; 
+            }
+            .letter-header h1 { 
+                font-size: 1.8rem; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating particles background -->
+    <div class="particles-bg" id="particlesBg"></div>
+
+    <!-- Decorative circles -->
+    <div class="deco-circle deco-circle-1"></div>
+    <div class="deco-circle deco-circle-2"></div>
+    <div class="deco-circle deco-circle-3"></div>
+
+    <!-- Main letter container -->
+    <div class="letter-container">
+        <div class="letter-card">
+            <!-- Heart decorations -->
+            <div class="heart-decoration heart-1">💖</div>
+            <div class="heart-decoration heart-2">💕</div>
+            <div class="heart-decoration heart-3">💝</div>
+
+            <!-- Letter header -->
+            <div class="letter-header">
+                <h1>🎉 Happy Birthday Madam Ji 🎉</h1>
+            </div>
+
+            <!-- Scrollable content wrapper -->
+            <div class="letter-content-wrapper">
+                <!-- Letter content -->
+                <div class="letter-content">
+                    <div class="greeting">Dear Madam Ji,</div>
+                    
+                    <p>
+                        On this special day, I want to take a moment to celebrate not just your birthday, but the incredible person you are. Your presence lights up every room you enter, and this love you've lit up our lives.
+                    </p>
+                    
+                    <p>
+                        Your kindness, wisdom, and beautiful spirit inspire everyone around you. You have this magical way of making ordinary moments feel extraordinary, and today is all about celebrating the magic that is uniquely you.
+                    </p>
+                    
+                    <p>
+                        May this new year of your life be filled with endless joy, beautiful surprises, and all the happiness your heart can hold. You deserve nothing but the very best that life has to offer.
+                    </p>
+
+                    <div class="memory-section">
+                        <h3>✨ Special Memories ✨</h3>
+                        <p>
+                            Every moment spent with you becomes a treasured memory. Your laughter is contagious, your smile brightens the darkest days, and your wisdom guides us through life's journey. Today, we celebrate all the beautiful memories we've shared and look forward to creating many more.
+                        </p>
+                    </div>
+
+                    <div class="extra-content">
+                        <h3>🌟 Your Amazing Qualities 🌟</h3>
+                        <p>
+                            You possess a rare combination of grace, intelligence, and compassion that makes you truly special. Your ability to see the good in everyone and everything is a gift that touches all our hearts.
+                        </p>
+                        
+                        <p>
+                            Your strength in facing challenges with a smile, your generosity in helping others, and your unwavering optimism are just a few of the many qualities that make you extraordinary.
+                        </p>
+                    </div>
+
+                    <div class="memory-section">
+                        <h3>🎂 Birthday Wishes 🎂</h3>
+                        <p>
+                            As you blow out your candles today, may each flame carry a wish for happiness, health, and prosperity. May this new chapter of your life be filled with adventures, achievements, and abundant joy.
+                        </p>
+                        
+                        <p>
+                            We wish you countless reasons to smile, endless opportunities to grow, and infinite moments of pure happiness. You deserve all the wonderful things life has to offer and so much more.
+                        </p>
+                    </div>
+                    
+                    <div class="highlight">
+                        Wishing you the most wonderful birthday! 🎂 ✨
+                    </div>
+                    
+                    <div class="signature">
+                        With love and warm wishes
+                    </div>
+
+                    <!-- Final celebration message -->
+                    <div class="final-message">
+                        <div class="celebration-text">
+                            🎉 Thank you for being the amazing person you are! 🎉
+                        </div>
+                        <p style="text-align: center; color: #666; font-style: italic;">
+                            Hope this little journey brought a smile to your face on your special day! 💕
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingParticles();
+        });
+
+        function createFloatingParticles() {
+            const particlesBg = document.getElementById('particlesBg');
+            const colors = ['#ffd700', '#ff69b4', '#87ceeb', '#98fb98', '#dda0dd', '#f0e68c', '#ff6347', '#40e0d0'];
+
+            setInterval(() => {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 8 + 4 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDuration = (Math.random() * 6 + 6) + 's';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                
+                particlesBg.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 10000);
+            }, 800);
+        }
+    </script>
+</body>
+</html>
